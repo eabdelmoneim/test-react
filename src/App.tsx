@@ -1,15 +1,26 @@
-import { ConnectWallet } from "@thirdweb-dev/react";
+import { ConnectWallet, useOwnedNFTs } from "@thirdweb-dev/react";
 import "./styles/Home.css";
 import { useContract, useNFT, ThirdwebNftMedia } from "@thirdweb-dev/react";
 
 export default function Home() {
   const { contract } = useContract(
-    "0x23581767a106ae21c074b2276d25e5c3e136a68b"
+    "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
   );
-  const { data: nft, isLoading, error } = useNFT(contract, "0");
+  const { data: nft, isLoading, error } = useNFT(contract, 0);
 
   if (isLoading) return <div>Loading...</div>;
-  if (error || !nft) return <div>NFT not found</div>;
+  if (error || !nft) {
+    return <div>NFT not found</div>;
+  } else {
+    console.log(nft);
+  }
 
-  return <ThirdwebNftMedia metadata={nft.metadata} />;
+  return (
+    <>
+      <div style={{ width: 200 }}>
+        <ConnectWallet></ConnectWallet>
+      </div>
+      <ThirdwebNftMedia metadata={nft.metadata} />
+    </>
+  );
 }
